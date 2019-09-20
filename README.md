@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # quiz-app
 
 This README outlines the details of collaborating on this Ember application.
@@ -59,4 +59,4 @@ Specify what it takes to deploy your app.
 =======
 # Quiz-Portal
 Quiz portal using ember client and ember mirage
->>>>>>> c0e279d06bf5e895e191f3da4b8c01283568c216
+
