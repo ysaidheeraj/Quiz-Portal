@@ -1,0 +1,146 @@
+<head>
+    <style>
+        .rating {
+        display: inline-block;
+        position: relative;
+        height: 50px;
+        line-height: 50px;
+        font-size: 50px;
+        }
+
+        .rating label {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        cursor: pointer;
+        }
+
+        .rating label:last-child {
+        position: static;
+        }
+
+        .rating label:nth-child(1) {
+        z-index: 5;
+        }
+
+        .rating label:nth-child(2) {
+        z-index: 4;
+        }
+
+        .rating label:nth-child(3) {
+        z-index: 3;
+        }
+
+        .rating label:nth-child(4) {
+        z-index: 2;
+        }
+
+        .rating label:nth-child(5) {
+        z-index: 1;
+        }
+
+        .rating label input {
+        position: absolute;
+        top: 0;
+        left: 0;
+        opacity: 0;
+        }
+
+        .rating label .icon {
+        float: left;
+        color: transparent;
+        }
+
+        .rating label:last-child .icon {
+        color: #000;
+        }
+
+        .rating:not(:hover) label input:checked ~ .icon,
+        .rating:hover label:hover input ~ .icon {
+        color: #09f;
+        }
+
+        .rating label input:focus:not(:checked) ~ .icon:last-child {
+        color: #000;
+        text-shadow: 0 0 5px #09f;
+        }
+    </style>
+</head>
+{{#if model}}
+    <h1>Answer the questions</h1>
+    <div class = "jumbotron">
+        <div class="form-group"> 
+            <label for="user" class="control-label">Username:</label>
+            {{input type="text" class="form-control" value=user placeholder="Enter user name" disabled=disabledText}}
+        </div>
+    </div>
+    {{#each model as |quiz|}}
+    <div class = "jumbotron" hidden={{isHidden}}>
+            <p>{{quiz.question}}</p>
+            {{#if quiz.star}}
+                <form class="rating">
+                    <label>
+                        <input type="radio" name="stars" value="1" id={{quiz.id}}/>
+                        <span class="icon">★</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="stars" value="2" id={{quiz.id}}/>
+                        <span class="icon">★</span>
+                        <span class="icon">★</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="stars" value="3" id={{quiz.id}}/>
+                        <span class="icon">★</span>
+                        <span class="icon">★</span>
+                        <span class="icon">★</span>   
+                    </label>
+                    <label>
+                        <input type="radio" name="stars" value="4" id={{quiz.id}}/>
+                        <span class="icon">★</span>
+                        <span class="icon">★</span>
+                        <span class="icon">★</span>
+                        <span class="icon">★</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="stars" value="5" id={{quiz.id}}/>
+                        <span class="icon">★</span>
+                        <span class="icon">★</span>
+                        <span class="icon">★</span>
+                        <span class="icon">★</span>
+                        <span class="icon">★</span>
+                    </label>
+                </form>
+            {{else}}
+            <!--Question with multiple answers -->
+                {{#if quiz.multiple}}
+                    <em style="color:red">(Note: This question may have more than one answer)</em>
+                    <form method="GET">
+                        {{#each quiz.options as |option|}}
+                            <div class="checkbox">
+                                <label><input type="checkbox" name={{quiz.id}} value={{option}}>{{option}}</label>
+                            </div>
+                        {{/each}}
+                    </form>
+                {{else}}
+                    <!--Question with single answer -->
+                    <form method="GET">
+                        {{#each quiz.options as |option|}}
+                            <div class="radio">
+                                <label><input type="radio" name="optradio" value={{option}}  id={{quiz.id}}>{{option}}</label>
+                            </div>
+                        {{/each}}
+                    </form>
+                {{/if}}
+            {{/if}}
+        </div>
+    {{/each}}
+    <div class="form-group"> <!-- Submit button !-->
+        <button type="submit" class="btn btn-primary" {{action this.doAction}} disabled={{isDisabled}} >{{this.buttonText}}</button>
+    </div> 
+    {{#if responseMessage}}
+        <div class = "alert alert-success">{{responseMessage}}</div>
+    {{/if}}  
+{{else}}
+    <div class = "alert alert-danger">No quizzes at the moment!!</div>
+{{/if}}
